@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nfs-content-init
+spec:
+  template:
+    spec:
+      containers:
+        - name: writer
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+            - echo "<hr/><h1>Page in NFS</h1><hr/>" > /data/index.html;
+          volumeMounts:
+            - name: web
+              mountPath: /data
+      restartPolicy: Never
+      volumes:
+        - name: web
+          persistentVolumeClaim:
+            claimName: task-pv-claim

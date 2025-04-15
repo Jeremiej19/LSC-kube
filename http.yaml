@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service-devops
+spec:
+  type: LoadBalancer
+  selector:
+    app: httpd_app
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment-devops
+  labels:
+    app: httpd_app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: httpd_app
+  template:
+    metadata:
+      labels:
+        app: httpd_app
+    spec:
+      containers:
+        - name: httpd-container-devops
+          image: httpd:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: web
+              mountPath: /usr/local/apache2/htdocs
+      volumes:
+        - name: web
+          persistentVolumeClaim:
+            claimName: task-pv-claim
