@@ -3,7 +3,7 @@
 First we need to install nfs server:
 ```
 helm repo add nfs-ganesha-server-and-external-provisioner https://kubernetes-sigs.github.io/nfs-ganesha-server-and-external-provisioner/
-helm install my-release nfs-ganesha-server-and-external-provisioner/nfs-server-provisioner
+helm install my-release nfs-ganesha-server-and-external-provisioner/nfs-server-provisioner --set=storageClass.name=lsc
 ```
 
 Next we can create claim on the pv using definition contained in `nfs.yaml` file
